@@ -1,0 +1,37 @@
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"log"
+	"time"
+
+	"github.com/liquentlabs/sdk-go/client/common"
+	"github.com/liquentlabs/sdk-go/client/explorer"
+)
+
+func main() {
+	network := common.LoadNetwork("testnet", "lb")
+
+	explorerClient, err := explorer.NewExplorerClient(network)
+	if err != nil {
+		log.Fatalf("Failed to create explorer client: %v", err)
+	}
+	defer explorerClient.Close()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// Example validator address (replace with an actual validator address)
+	validatorAddress := "lqtvaloper1kk523rsm9pey740cx4plalp40009ncs0wrchfe"
+
+	response, err := explorerClient.FetchValidatorUptime(ctx, validatorAddress)
+	if err != nil {
+		log.Panicf("Failed to fetch validator uptime: %v", err)
+	}
+
+	fmt.Println("Validator uptime:")
+	str, _ := json.MarshalIndent(response, "", "\t")
+	fmt.Print(string(str))
+}

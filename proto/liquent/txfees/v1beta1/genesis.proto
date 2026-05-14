@@ -1,0 +1,9 @@
+syntax = "proto3";
+package liquent.txfees.v1beta1;
+
+import "liquent/txfees/v1beta1/txfees.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/liquentlabs/liquent-core/liquent-chain/modules/txfees/types";
+
+message GenesisState { Params params = 1 [ (gogoproto.nullable) = false ]; }
